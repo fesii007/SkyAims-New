@@ -4,19 +4,31 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  base: "/",
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@assets": path.resolve(__dirname, "./attached_assets"),
+      "@": path.resolve(import.meta.dirname, "src"),
+      "@assets": path.resolve(import.meta.dirname, "src", "assets"),
     },
+    dedupe: ["react", "react-dom"],
   },
+  root: path.resolve(import.meta.dirname),
   build: {
-    outDir: "dist",
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
   server: {
+    port: Number(process.env.PORT) || 5173,
     host: "0.0.0.0",
-    port: 5173,
+    allowedHosts: true,
+  },
+  preview: {
+    port: Number(process.env.PORT) || 4173,
+    host: "0.0.0.0",
+    allowedHosts: true,
   },
 });
